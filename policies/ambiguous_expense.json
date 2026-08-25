@@ -1,0 +1,24 @@
+{
+  "workflow_id": "WF-EXPENSE-002",
+  "title": "Ambiguous Expense Request",
+  "trigger": "Urgent Equipment Order",
+  "roles_allowed": ["Employee", "IT_Manager"],
+  "steps": [
+    {
+      "id": "STEP-1",
+      "action": "Order a powerful laptop quickly",
+      "role": "Employee",
+      "condition": "Senior developer request",
+      "is_required": true,
+      "dependencies": []
+    },
+    {
+      "id": "STEP-2",
+      "action": "Expedite delivery soon",
+      "role": "IT_Manager",
+      "condition": "Appropriate cost",
+      "is_required": false,
+      "dependencies": ["STEP-1"]
+    }
+  ]
+}

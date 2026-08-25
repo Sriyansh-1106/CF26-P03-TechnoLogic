@@ -1,0 +1,24 @@
+{
+  "workflow_id": "WF-CYCLIC-004",
+  "title": "Cyclic Approval Deadlock Workflow",
+  "trigger": "Cross-Departmental Approval",
+  "roles_allowed": ["Employee", "IT_Manager", "Finance_Director"],
+  "steps": [
+    {
+      "id": "STEP-1",
+      "action": "IT Manager Approval",
+      "role": "IT_Manager",
+      "condition": "Requires Finance Approval First",
+      "is_required": true,
+      "dependencies": ["STEP-2"]
+    },
+    {
+      "id": "STEP-2",
+      "action": "Finance Director Approval",
+      "role": "Finance_Director",
+      "condition": "Requires IT Approval First",
+      "is_required": true,
+      "dependencies": ["STEP-1"]
+    }
+  ]
+}

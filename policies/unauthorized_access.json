@@ -1,0 +1,24 @@
+{
+  "workflow_id": "WF-ACCESS-003",
+  "title": "Unauthorized Role Escalation Purchase",
+  "trigger": "Intern High-Value Purchase",
+  "roles_allowed": ["Intern", "Employee"],
+  "steps": [
+    {
+      "id": "STEP-1",
+      "action": "Request $50,000 High Performance Workstation",
+      "role": "Intern",
+      "condition": "Budget = 50000 USD",
+      "is_required": true,
+      "dependencies": []
+    },
+    {
+      "id": "STEP-2",
+      "action": "Self-Approve High-Value Purchase",
+      "role": "Intern",
+      "condition": "Direct Approval",
+      "is_required": true,
+      "dependencies": ["STEP-1"]
+    }
+  ]
+}

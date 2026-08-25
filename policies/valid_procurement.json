@@ -1,0 +1,32 @@
+{
+  "workflow_id": "WF-PROCURE-001",
+  "title": "Standard IT Laptop Procurement Workflow",
+  "trigger": "New Senior Developer Onboarding",
+  "roles_allowed": ["Employee", "IT_Manager", "Finance_Director"],
+  "steps": [
+    {
+      "id": "STEP-1",
+      "action": "Submit Equipment Purchase Request",
+      "role": "Employee",
+      "condition": "Budget <= 3000 USD",
+      "is_required": true,
+      "dependencies": []
+    },
+    {
+      "id": "STEP-2",
+      "action": "Approve Laptop Specifications & Budget",
+      "role": "IT_Manager",
+      "condition": "Approved amount <= 3000 USD",
+      "is_required": true,
+      "dependencies": ["STEP-1"]
+    },
+    {
+      "id": "STEP-3",
+      "action": "Issue Vendor Purchase Order",
+      "role": "Finance_Director",
+      "condition": "Vendor verified",
+      "is_required": true,
+      "dependencies": ["STEP-2"]
+    }
+  ]
+}
