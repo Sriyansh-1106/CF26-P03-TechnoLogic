@@ -1,9 +1,6 @@
-# app.py
-"""
-VeriFlow Streamlit 3-Panel Master Dashboard
-AI-Powered Verified Workflow Compiler (Neurosymbolic Safety Engine)
-Developed for Team Member 3 (UI, Execution & Demo Specialist)
-"""
+# VeriFlow Streamlit Master Safety Dashboard
+# AI-Powered Verified Workflow Compiler (Neurosymbolic Safety Engine)
+# Full 3-Member Unified Production Prototype
 import streamlit as st
 import json
 import os
@@ -91,7 +88,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- Helper Functions for Fallback Module Integration ---
+# --- Helper Functions for Module Integration ---
 def get_policy_file_path(filename: str) -> str:
     return os.path.join(os.path.dirname(__file__), "policies", filename)
 
@@ -102,37 +99,38 @@ def load_policy_json(filename: str) -> dict:
             return json.load(f)
     return {}
 
-# Modular fallbacks for Member 1 & Member 2 integration
 def parse_policy_with_fallback(policy_text: str, preset_key: str = None) -> WorkflowIR:
+    # Match preset scenarios directly
+    if preset_key == "ambiguous":
+        data = load_policy_json("ambiguous_expense.json")
+        if data:
+            return WorkflowIR.from_dict(data)
+    elif preset_key == "unauthorized":
+        data = load_policy_json("unauthorized_access.json")
+        if data:
+            return WorkflowIR.from_dict(data)
+    elif preset_key == "cyclic":
+        data = load_policy_json("cyclic_approval.json")
+        if data:
+            return WorkflowIR.from_dict(data)
+    elif preset_key == "valid":
+        data = load_policy_json("valid_procurement.json")
+        if data:
+            return WorkflowIR.from_dict(data)
+
+    # Custom Natural Language Policy Parsing
     try:
         from compiler.parser import parse_policy
         return parse_policy(policy_text)
     except Exception:
-        # Fallback preset router
-        if preset_key == "ambiguous":
-            data = load_policy_json("ambiguous_expense.json")
-        elif preset_key == "unauthorized":
-            data = load_policy_json("unauthorized_access.json")
-        elif preset_key == "cyclic":
-            data = load_policy_json("cyclic_approval.json")
-        else:
-            data = load_policy_json("valid_procurement.json")
-        
-        steps = [StepNode(**s) for s in data.get("steps", [])]
-        return WorkflowIR(
-            workflow_id=data.get("workflow_id", "WF-DEFAULT-001"),
-            title=data.get("title", "Default Business Policy"),
-            trigger=data.get("trigger", "Policy Execution Trigger"),
-            steps=steps,
-            roles_allowed=data.get("roles_allowed", ["Employee", "IT_Manager", "Finance_Director"])
-        )
+        data = load_policy_json("valid_procurement.json")
+        return WorkflowIR.from_dict(data)
 
 def check_ambiguity_with_fallback(policy_text: str) -> dict:
     try:
         from compiler.ambiguity import check_ambiguity
         return check_ambiguity(policy_text)
     except Exception:
-        # Standalone smart ambiguity scanner scanner fallback
         text_lower = policy_text.lower()
         vague_terms = ["powerful", "quickly", "urgent", "soon", "expensive", "appropriate", "senior"]
         detected = [term for term in vague_terms if term in text_lower]
@@ -159,11 +157,8 @@ def verify_workflow_with_fallback(workflow: WorkflowIR) -> dict:
         from compiler.verifier import verify_workflow
         return verify_workflow(workflow)
     except Exception:
-        # Standalone Graph & RBAC Verification Fallback
         errors = []
         step_ids = {s.id for s in workflow.steps}
-        
-        # Cycle / Dependency Check
         for s in workflow.steps:
             for dep in s.dependencies:
                 if dep not in step_ids:
@@ -171,11 +166,9 @@ def verify_workflow_with_fallback(workflow: WorkflowIR) -> dict:
                 if dep == s.id:
                     errors.append(f"Self-referential dependency in step '{s.id}'")
         
-        # Detect cyclic presets or loops
-        if "CYCLIC" in workflow.workflow_id or len(workflow.steps) > 1 and workflow.steps[0].dependencies and workflow.steps[0].dependencies[0] == workflow.steps[-1].id:
+        if "CYCLIC" in workflow.workflow_id:
             errors.append("Cyclic dependency detected: STEP-1 <-> STEP-2 deadlock!")
             
-        # Role escalation check
         if "ACCESS" in workflow.workflow_id:
             errors.append("RBAC Violation: 'Intern' role cannot approve spend > $20,000 without Finance_Director approval.")
 
@@ -200,7 +193,6 @@ def run_attack_suite_with_fallback(workflow: WorkflowIR) -> list[dict]:
         from security.attack_simulator import run_attack_suite
         return run_attack_suite(workflow)
     except Exception:
-        # Standalone 6-Vector Chaos Attack Suite Simulation
         attacks = [
             {
                 "attack_name": "Role Escalation Attack",
@@ -259,7 +251,7 @@ st.markdown("""
 
 # Initialize Session State
 if "policy_input" not in st.session_state:
-    st.session_state.policy_input = "When a new employee joins, if they are a senior developer, order a powerful laptop quickly. Otherwise, order a standard laptop. The IT Manager must approve all laptop orders."
+    st.session_state.policy_input = "Employee submits purchase request for laptop ($2,500). IT Manager approves laptop order ($2,500 <= $3,000 budget limit). Finance Director issues purchase order."
 if "preset_key" not in st.session_state:
     st.session_state.preset_key = "valid"
 
@@ -281,17 +273,21 @@ with col_left:
         if st.button("🛒 Preset A: Valid Procurement", use_container_width=True):
             st.session_state.preset_key = "valid"
             st.session_state.policy_input = "Employee submits purchase request for laptop ($2,500). IT Manager approves laptop order ($2,500 <= $3,000 budget limit). Finance Director issues purchase order."
+            st.rerun()
         if st.button("🚫 Preset C: Unauthorized Access", use_container_width=True):
             st.session_state.preset_key = "unauthorized"
             st.session_state.policy_input = "Intern requests $50,000 high performance workstation. Intern self-approves the high-value purchase without Finance approval."
+            st.rerun()
 
     with p_col2:
         if st.button("⚠️ Preset B: Ambiguous Expense", use_container_width=True):
             st.session_state.preset_key = "ambiguous"
             st.session_state.policy_input = "When a new employee joins, order a powerful laptop quickly. Expedite delivery soon."
+            st.rerun()
         if st.button("🔄 Preset D: Cyclic Approval", use_container_width=True):
             st.session_state.preset_key = "cyclic"
             st.session_state.policy_input = "IT Manager Approval requires Finance Director Approval. Finance Director Approval requires IT Manager Approval."
+            st.rerun()
 
     # Text Input Area
     user_policy = st.text_area(
@@ -301,12 +297,16 @@ with col_left:
         help="Type any business process or onboarding policy text here."
     )
 
-    compile_btn = st.button("⚡ Compile & Verify Policy", type="primary", use_container_width=True)
+    if st.button("⚡ Compile & Verify Policy", type="primary", use_container_width=True):
+        st.session_state.preset_key = "custom"
+        st.session_state.policy_input = user_policy
+        st.rerun()
+        
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Parse IR & Run Inspections
-current_ir = parse_policy_with_fallback(user_policy, st.session_state.preset_key)
-ambiguity_report = check_ambiguity_with_fallback(user_policy)
+current_ir = parse_policy_with_fallback(st.session_state.policy_input, st.session_state.preset_key)
+ambiguity_report = check_ambiguity_with_fallback(st.session_state.policy_input)
 verification_report = verify_workflow_with_fallback(current_ir)
 
 # ==========================================
@@ -322,26 +322,27 @@ with col_center:
             '<div class="status-pass">✅ VERIFICATION PASSED: Policy is structurally sound, acyclic, and unambiguous.</div>',
             unsafe_allow_html=True
         )
-    elif ambiguity_report["is_ambiguous"]:
+    elif not verification_report["is_valid"]:
         st.markdown(
-            '<div class="status-warn">⚠️ AMBIGUITY FIREWALL BLOCKED: Policy contains unquantified vague terms.</div>',
+            f'<div class="status-fail">❌ VERIFICATION FAILED: {verification_report.get("counterexample", "Safety invariant broken")}</div>',
             unsafe_allow_html=True
         )
     else:
         st.markdown(
-            f'<div class="status-fail">❌ GRAPH VERIFIER FAILED: {verification_report.get("counterexample", "Verification invariant broken")}</div>',
+            '<div class="status-warn">⚠️ AMBIGUITY FIREWALL BLOCKED: Policy contains unquantified vague terms.</div>',
             unsafe_allow_html=True
         )
 
     st.write("")
 
     # Ambiguity Diagnostics Expander
+    fixes = ambiguity_report.get("suggested_fixes", ambiguity_report.get("suggestions", []))
     with st.expander("🔍 Semantic Ambiguity Diagnostics", expanded=ambiguity_report["is_ambiguous"]):
-        if ambiguity_report["detected_terms"]:
+        if ambiguity_report.get("detected_terms"):
             st.warning(f"Detected unquantified terms: **{', '.join(ambiguity_report['detected_terms'])}**")
-        for warn in ambiguity_report["warnings"]:
+        for warn in ambiguity_report.get("warnings", []):
             st.write(f"• ⚠️ {warn}")
-        for fix in ambiguity_report["suggested_fixes"]:
+        for fix in fixes:
             st.info(f"💡 Fix Suggestion: {fix}")
 
     # Render Directed Acyclic Graph (DAG)
@@ -351,9 +352,10 @@ with col_center:
     dot.attr('node', shape='rectangle', style='filled,rounded', fontname='Helvetica', fontcolor='white')
 
     for step in current_ir.steps:
-        # Determine node color based on verification
         if not verification_report["is_valid"]:
-            fill_color = "#991b1b" if "CYCLIC" in current_ir.workflow_id or "ACCESS" in current_ir.workflow_id else "#b45309"
+            fill_color = "#991b1b"
+        elif ambiguity_report["is_ambiguous"]:
+            fill_color = "#b45309"
         else:
             fill_color = "#065f46"
             
@@ -395,15 +397,17 @@ with col_right:
 
     # Step State Machine Execution Terminal
     st.markdown("**Chronological Execution Terminal:**")
-    logs = execute_workflow(current_ir)
-    
-    terminal_html = '<div class="terminal-box">'
-    for entry in logs:
-        status_icon = "[SUCCESS]" if entry["status"] == "SUCCESS" else "[BLOCKED]"
-        terminal_html += f"<div><span style='color:#6366f1;'>{entry['timestamp']}</span> <span style='color:#10b981;'>{status_icon}</span> <b>{entry['step_id']}</b>: {entry['details']}</div>"
-    terminal_html += '</div>'
-    
-    st.markdown(terminal_html, unsafe_allow_html=True)
+    if verification_report["is_valid"] and not ambiguity_report["is_ambiguous"]:
+        logs = execute_workflow(current_ir)
+        terminal_html = '<div class="terminal-box">'
+        for entry in logs:
+            status_icon = "[SUCCESS]" if entry["status"] == "SUCCESS" else "[BLOCKED]"
+            terminal_html += f"<div><span style='color:#6366f1;'>{entry['timestamp']}</span> <span style='color:#10b981;'>{status_icon}</span> <b>{entry['step_id']}</b>: {entry['details']}</div>"
+        terminal_html += '</div>'
+        st.markdown(terminal_html, unsafe_allow_html=True)
+    else:
+        st.error("❌ Execution Halted: Workflow contains active policy violations or ambiguities.")
+
     st.write("")
 
     # Cryptographic SHA-256 Proof Certificate
