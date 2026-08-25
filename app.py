@@ -385,9 +385,13 @@ with col_right:
     with st.expander("⚔️ 6-Vector Adversarial Attack Suite Results", expanded=True):
         st.caption("Adversarial mutation testing attacking the compiled workflow IR:")
         for atk in attacks:
-            status_color = "🟢" if atk["status"] == "BLOCKED" else "🔴"
-            st.markdown(f"**{status_color} {atk['attack_name']}** `[{atk['status']}]`")
-            st.caption(f"_{atk['explanation']}_")
+            if "error" in atk:
+                st.warning(f"⚠️ {atk['error']}")
+                continue
+            status = atk.get("status", "BLOCKED")
+            status_color = "🟢" if status == "BLOCKED" else "🔴"
+            st.markdown(f"**{status_color} {atk.get('attack_name', 'Adversarial Attack')}** `[{status}]`")
+            st.caption(f"_{atk.get('explanation', '')}_")
 
     # Step State Machine Execution Terminal
     st.markdown("**Chronological Execution Terminal:**")
