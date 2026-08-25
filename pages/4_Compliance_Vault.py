@@ -1,4 +1,4 @@
-# pages/4_📜_Compliance_Vault.py
+# pages/4_Compliance_Vault.py
 """
 VeriFlow • Cryptographic Compliance Vault
 Immutable SHA-256 verification receipts and audit ledger.

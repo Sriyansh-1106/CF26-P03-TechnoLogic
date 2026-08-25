@@ -1,4 +1,4 @@
-# pages/1_⚡_Compiler_Studio.py
+# pages/1_Compiler_Studio.py
 """
 VeriFlow • Live Policy Compiler Studio
 Compile natural language policies into verified Directed Acyclic Graphs.

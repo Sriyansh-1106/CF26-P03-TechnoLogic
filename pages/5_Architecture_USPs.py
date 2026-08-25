@@ -1,4 +1,4 @@
-# pages/5_🎓_Architecture_&_USPs.py
+# pages/5_Architecture_USPs.py
 """
 VeriFlow • Neurosymbolic Architecture & Case Studies
 Explains the mathematical theory, member roles, and real-world impact.

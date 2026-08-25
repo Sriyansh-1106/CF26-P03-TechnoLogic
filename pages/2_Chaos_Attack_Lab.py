@@ -1,4 +1,4 @@
-# pages/2_💥_Chaos_Attack_Lab.py
+# pages/2_Chaos_Attack_Lab.py
 """
 VeriFlow • Adversarial Chaos Attack Laboratory
 Mutation testing attacking the compiled workflow AST/IR across 6 vectors.

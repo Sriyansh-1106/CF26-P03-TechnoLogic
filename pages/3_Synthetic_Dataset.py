@@ -1,4 +1,4 @@
-# pages/3_🤖_Synthetic_Dataset_&_Benchmark.py
+# pages/3_Synthetic_Dataset.py
 """
 VeriFlow • Synthetic Dataset Generator & AI Training/Benchmarking Suite
 Generate synthetic enterprise policy datasets, export fine-tuning JSONL, and run comparative benchmarks.
