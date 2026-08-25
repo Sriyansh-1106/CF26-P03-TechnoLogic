@@ -21,6 +21,9 @@ def main():
     # 1. Base Valid Workflow
     print("\n[STEP 1] Generating Baseline Valid Enterprise Workflow...")
     base_workflow = WorkflowIR(
+        workflow_id="wf-demo-laptop-001",
+        title="Laptop Onboarding Policy",
+        trigger="New Employee Onboarding",
         steps=[
             Step(id='request_laptop', role='Employee', action='request_laptop', dependencies=[]),
             Step(id='manager_approval', role='IT Manager', action='approve_laptop', condition='budget <= 3000', dependencies=['request_laptop']),

@@ -31,15 +31,30 @@ _ROLE_ACTION_TABLE: Dict[str, List[tuple[str, Optional[float]]]] = {
     "Employee": [
         ("submit", None),
         ("verify_vendor", None),
+        ("submit_purchase_request", None),
+        ("submit_vendor_invoice", None),
+        ("request_laptop", None),
     ],
     "Manager": [
         ("submit", None),          # Managers may also submit on behalf of team
         ("approve_budget", 20_000),  # only for amount <= 20,000
+        ("approve_laptop", None),
+        ("reject_laptop", None),
+        ("review", None),
+    ],
+    "IT Manager": [
+        ("approve_laptop", None),
+        ("reject_laptop", None),
     ],
     "Finance_Director": [
         ("approve_budget", None),   # no upper limit
         ("finance_approval", None),
         ("release_payment", None),
+    ],
+    "System": [
+        ("create_ticket", None),
+        ("close_ticket", None),
+        ("send_notification", None),
     ],
     "Admin": [
         ("*", None),               # wildcard – all actions allowed
@@ -101,6 +116,10 @@ def check_role_permission(
                 return True
 
     return False
+
+
+# Exported alias for track compatibility
+is_authorized = check_role_permission
 
 
 def get_role_actions(role: str) -> List[str]:

@@ -5,6 +5,9 @@ from security.attack_simulator import run_attack_suite
 
 def create_valid_workflow():
     return WorkflowIR(
+        workflow_id="wf-test-laptop-001",
+        title="Laptop Purchase Workflow",
+        trigger="Employee joins company",
         steps=[
             Step(id='request_laptop', role='Employee', action='request_laptop', dependencies=[]),
             Step(id='manager_approval', role='IT Manager', action='approve_laptop', dependencies=['request_laptop']),
