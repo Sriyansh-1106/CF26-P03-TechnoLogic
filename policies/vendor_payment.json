@@ -1,0 +1,48 @@
+{
+  "workflow_id": "wf-vendor-001",
+  "title": "Vendor Payment Approval Workflow",
+  "trigger": "Employee submits vendor invoice for payment",
+  "steps": [
+    {
+      "id": "step_1",
+      "action": "submit_vendor_invoice",
+      "role": "Employee",
+      "condition": null,
+      "is_required": true,
+      "dependencies": []
+    },
+    {
+      "id": "step_2",
+      "action": "verify_vendor",
+      "role": "Employee",
+      "condition": null,
+      "is_required": true,
+      "dependencies": ["step_1"]
+    },
+    {
+      "id": "step_3",
+      "action": "approve_budget",
+      "role": "Manager",
+      "condition": "amount <= 20000",
+      "is_required": true,
+      "dependencies": ["step_2"]
+    },
+    {
+      "id": "step_4",
+      "action": "finance_approval",
+      "role": "Finance_Director",
+      "condition": "amount > 20000",
+      "is_required": false,
+      "dependencies": ["step_2"]
+    },
+    {
+      "id": "step_5",
+      "action": "release_payment",
+      "role": "Finance_Director",
+      "condition": null,
+      "is_required": true,
+      "dependencies": ["step_3", "step_4"]
+    }
+  ],
+  "roles_allowed": ["Employee", "Manager", "Finance_Director", "Admin"]
+}
