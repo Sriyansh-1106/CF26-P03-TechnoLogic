@@ -1,7 +1,7 @@
 # app.py
 """
 VeriFlow Enterprise Neurosymbolic Safety Compiler
-Unified Interactive Multi-Module Application (Instant Sidebar Navigation)
+Unified Interactive Multi-Module Application (Sidebar Controls Edition)
 """
 import streamlit as st
 import json
@@ -97,23 +97,6 @@ st.markdown("""
         overflow-y: auto;
     }
 
-    .telemetry-stream {
-        background-color: #0f172a;
-        border: 1px solid #1e293b;
-        border-radius: 10px;
-        padding: 1.1rem;
-        font-size: 0.82rem;
-        color: #f1f5f9;
-        max-height: 400px;
-        overflow-y: auto;
-    }
-
-    .telemetry-step {
-        margin-bottom: 0.6rem;
-        border-bottom: 1px dashed #334155;
-        padding-bottom: 0.5rem;
-    }
-
     .cert-vault-card {
         background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
         border-radius: 12px;
@@ -136,7 +119,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Preset Dictionary
+# Preset Scenarios
 PRESETS = {
     "🛒 Preset A: Valid Procurement": "Employee submits purchase request for laptop ($2,500). IT Manager approves laptop order ($2,500 <= $3,000 budget limit). Finance Director issues purchase order.",
     "⚠️ Preset B: Ambiguous Expense": "When a new employee joins, order a powerful laptop quickly. Expedite delivery soon.",
@@ -144,7 +127,7 @@ PRESETS = {
     "🔄 Preset D: Cyclic Approval": "IT Manager Approval requires Finance Director Approval. Finance Director Approval requires IT Manager Approval."
 }
 
-# Navigation State
+# Navigation Modules
 PAGES = [
     "⚡ 1. Compiler Studio & Visualizer",
     "💥 2. Adversarial Chaos Attack Lab",
@@ -158,13 +141,15 @@ if "nav_page" not in st.session_state:
 if "policy_input" not in st.session_state:
     st.session_state.policy_input = PRESETS["🛒 Preset A: Valid Procurement"]
 
-# --- Sidebar Control Center ---
+# ==========================================
+# SIDEBAR CONTROL PANEL
+# ==========================================
 with st.sidebar:
     st.markdown("## 🛡️ VeriFlow OS")
     st.caption("Enterprise Workflow Safety Compiler")
     
     st.markdown("---")
-    st.markdown("### 🧭 Navigation Module")
+    st.markdown("### 🧭 Navigation")
     selected_nav = st.radio(
         "Select Active Workspace:",
         options=PAGES,
@@ -173,16 +158,31 @@ with st.sidebar:
     st.session_state.nav_page = selected_nav
 
     st.markdown("---")
-    st.markdown("### ⚙️ Compiler Controls")
-    preset_sel = st.selectbox("Quick Demo Scenario:", list(PRESETS.keys()))
+    st.markdown("### 📝 Policy Input Studio")
+    preset_choice = st.selectbox("Quick Demo Scenario Preset:", list(PRESETS.keys()))
+    
     if st.button("Apply Preset Scenario", use_container_width=True):
-        st.session_state.policy_input = PRESETS[preset_sel]
+        st.session_state.policy_input = PRESETS[preset_choice]
+        st.rerun()
+
+    st.write("")
+    user_typed_policy = st.text_area(
+        "Natural Language Policy Prompt:",
+        value=st.session_state.policy_input,
+        height=140,
+        help="Type or edit custom enterprise policy rules here."
+    )
+
+    if st.button("🚀 Compile & Verify Workflow", type="primary", use_container_width=True):
+        st.session_state.policy_input = user_typed_policy
         st.rerun()
 
     st.markdown("---")
-    st.caption("VeriFlow Core v2.0 • 100% Invariant Safety")
+    st.caption("Engine: Neurosymbolic • Invariant Proofs: Mathematical")
 
-# Header
+# ==========================================
+# MAIN CANVAS HEADER
+# ==========================================
 st.markdown("""
 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; padding-bottom:0.5rem; border-bottom:1px solid #e2e8f0;">
     <div>
@@ -202,7 +202,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Common Pipeline Processing
+# Common Backend Execution
 current_ir = parse_policy(st.session_state.policy_input)
 ambiguity_report = check_ambiguity(st.session_state.policy_input)
 verification_report = verify_workflow(current_ir)
@@ -212,58 +212,58 @@ attacks = run_attack_suite(current_ir)
 # VIEW 1: COMPILER STUDIO & VISUALIZER
 # ===========================================================================
 if st.session_state.nav_page == PAGES[0]:
-    c_in, c_graph = st.columns([1, 1.25])
-
-    with c_in:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown("### 📝 Policy Input Studio")
-        st.caption("Type or edit any business rule below:")
-        
-        user_text = st.text_area(
-            "Natural Language Policy Prompt:",
-            value=st.session_state.policy_input,
-            height=140
+    # 1. Main Status Banner
+    if verification_report["is_valid"] and not ambiguity_report["is_ambiguous"]:
+        st.markdown(
+            '<div class="banner-pass">✅ <b>VERIFICATION PASSED</b>: Workflow is mathematically acyclic, authorized by RBAC, and free of ambiguity. Safe for execution.</div>',
+            unsafe_allow_html=True
         )
-        
-        if st.button("🚀 Compile & Verify Workflow", type="primary", use_container_width=True):
-            st.session_state.policy_input = user_text
-            st.rerun()
-            
-        st.markdown('</div>', unsafe_allow_html=True)
+    elif not verification_report["is_valid"]:
+        st.markdown(
+            f'<div class="banner-fail">❌ <b>VERIFICATION FAILED</b>: {verification_report.get("counterexample", "Safety invariant broken")}</div>',
+            unsafe_allow_html=True
+        )
+    else:
+        st.markdown(
+            '<div class="banner-warn">⚠️ <b>AMBIGUITY FIREWALL BLOCKED</b>: Policy contains unquantified adjectives or missing numeric limits.</div>',
+            unsafe_allow_html=True
+        )
 
-    with c_graph:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown("### 🕸️ Directed Workflow Graph (DAG)")
-        
-        if verification_report["is_valid"] and not ambiguity_report["is_ambiguous"]:
-            st.markdown('<div class="banner-pass">✅ <b>VERIFICATION PASSED</b>: Graph is acyclic, authorized by RBAC, and free of ambiguity.</div>', unsafe_allow_html=True)
-        elif not verification_report["is_valid"]:
-            st.markdown(f'<div class="banner-fail">❌ <b>VERIFICATION FAILED</b>: {verification_report.get("counterexample", "Invariant broken")}</div>', unsafe_allow_html=True)
+    # 2. Ambiguity Diagnostics
+    if ambiguity_report["is_ambiguous"]:
+        with st.expander("🔍 Ambiguity Diagnostics & Recommended Fixes", expanded=True):
+            if ambiguity_report.get("detected_terms"):
+                st.warning(f"Unquantified adjectives detected: **{', '.join(ambiguity_report['detected_terms'])}**")
+            for w in ambiguity_report.get("warnings", []):
+                st.write(f"• ⚠️ {w}")
+            for fix in ambiguity_report.get("suggested_fixes", ambiguity_report.get("suggestions", [])):
+                st.info(f"💡 Fix Suggestion: {fix}")
+
+    # 3. Directed Workflow Graph (DAG)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown("### 🕸️ Directed Workflow Graph (DAG)")
+    
+    dot = graphviz.Digraph(comment="VeriFlow Graph")
+    dot.attr(rankdir="LR", bgcolor="transparent")
+    dot.attr('node', shape='rectangle', style='filled,rounded', fontname='Plus Jakarta Sans', fontcolor='#0f172a', penwidth='1.5')
+
+    for step in current_ir.steps:
+        if not verification_report["is_valid"]:
+            fill_color, border_color = "#fecdd3", "#e11d48"
+        elif ambiguity_report["is_ambiguous"]:
+            fill_color, border_color = "#fef3c7", "#d97706"
         else:
-            st.markdown('<div class="banner-warn">⚠️ <b>AMBIGUITY FIREWALL BLOCKED</b>: Policy contains vague adjectives or missing limits.</div>', unsafe_allow_html=True)
+            fill_color, border_color = "#d1fae5", "#059669"
+        dot.node(step.id, f"{step.id}\n{step.action}\n[{step.role}]", fillcolor=fill_color, color=border_color)
 
-        # Render DAG
-        dot = graphviz.Digraph(comment="VeriFlow Graph")
-        dot.attr(rankdir="LR", bgcolor="transparent")
-        dot.attr('node', shape='rectangle', style='filled,rounded', fontname='Plus Jakarta Sans', fontcolor='#0f172a', penwidth='1.5')
+    for step in current_ir.steps:
+        for dep in step.dependencies:
+            dot.edge(dep, step.id, color="#64748b", penwidth="1.8")
 
-        for step in current_ir.steps:
-            if not verification_report["is_valid"]:
-                fill_color, border_color = "#fecdd3", "#e11d48"
-            elif ambiguity_report["is_ambiguous"]:
-                fill_color, border_color = "#fef3c7", "#d97706"
-            else:
-                fill_color, border_color = "#d1fae5", "#059669"
-            dot.node(step.id, f"{step.id}\n{step.action}\n[{step.role}]", fillcolor=fill_color, color=border_color)
+    st.graphviz_chart(dot, use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-        for step in current_ir.steps:
-            for dep in step.dependencies:
-                dot.edge(dep, step.id, color="#64748b", penwidth="1.8")
-
-        st.graphviz_chart(dot, use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    # Bottom Execution & Proof
+    # 4. Execution Sandbox & Proof Vault
     e1, e2 = st.columns([1.2, 1])
     with e1:
         st.markdown('<div class="card">', unsafe_allow_html=True)
