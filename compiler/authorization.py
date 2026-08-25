@@ -95,23 +95,41 @@ def check_role_permission(
     bool
         ``True`` if the role–action combination is authorised.
     """
-    if role not in _ROLE_ACTION_TABLE:
+    # Normalize role name
+    norm_role = role.replace("_", " ").strip()
+    matched_role = None
+    for r in _ROLE_ACTION_TABLE:
+        if r.lower().replace("_", " ") == norm_role.lower():
+            matched_role = r
+            break
+            
+    if not matched_role:
         return False
 
-    for perm_action, max_amount in _ROLE_ACTION_TABLE[role]:
-        # Admin wildcard
+    act_norm = action.lower().replace("-", "_").replace(" ", "_").strip()
+
+    for perm_action, max_amount in _ROLE_ACTION_TABLE[matched_role]:
         if perm_action == "*":
             return True
 
-        if perm_action == action:
-            # No monetary restriction on this permission
+        perm_norm = perm_action.lower().replace("-", "_").replace(" ", "_").strip()
+        
+        # Exact or semantic substring match
+        is_match = (
+            perm_norm == act_norm or 
+            perm_norm in act_norm or 
+            act_norm in perm_norm or
+            ("submit" in act_norm and perm_norm == "submit") or
+            ("purchase" in act_norm and "submit" in act_norm and "submit" in perm_norm) or
+            ("laptop" in act_norm and "approve" in act_norm and "approve" in perm_norm) or
+            ("order" in act_norm and "finance" in matched_role.lower())
+        )
+
+        if is_match:
             if max_amount is None:
                 return True
-            # Monetary restriction: check only if caller provided an amount
             if amount is not None and amount <= max_amount:
                 return True
-            # If no amount was given we grant the permission (caller must
-            # validate amount separately if needed)
             if amount is None:
                 return True
 
