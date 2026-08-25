@@ -54,8 +54,8 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("### 🧭 Dedicated Application Modules")
-st.caption("Select a module below or use the left navigation sidebar:")
+st.markdown("### 🧭 Dedicated Application Modules (Use Left Sidebar)")
+st.info("👈 **Select any module from the left sidebar** to begin interactive testing:")
 
 c1, c2, c3 = st.columns(3)
 
@@ -63,37 +63,34 @@ with c1:
     st.markdown("""
     <div class="portal-card">
         <div style="font-size: 2.2rem; margin-bottom: 0.3rem;">⚡</div>
-        <h3 style="margin: 0; color: #0f172a;">Compiler Studio</h3>
+        <h3 style="margin: 0; color: #0f172a;">1. Compiler Studio</h3>
         <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.25rem;">
-            Compile natural language business rules into verified Directed Acyclic Graphs.
+            Compile natural language business rules into verified Directed Acyclic Graphs with sandbox execution.
         </p>
     </div>
     """, unsafe_allow_html=True)
-    st.page_link("pages/1_Compiler_Studio.py", label="Open Compiler Studio ⚡", icon="⚡", use_container_width=True)
 
 with c2:
     st.markdown("""
     <div class="portal-card">
         <div style="font-size: 2.2rem; margin-bottom: 0.3rem;">💥</div>
-        <h3 style="margin: 0; color: #0f172a;">Chaos Attack Lab</h3>
+        <h3 style="margin: 0; color: #0f172a;">2. Chaos Attack Lab</h3>
         <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.25rem;">
-            Subject compiled workflows to 6-vector adversarial mutations.
+            Subject compiled workflows to 6-vector adversarial mutations (role escalation, pruning, cycles).
         </p>
     </div>
     """, unsafe_allow_html=True)
-    st.page_link("pages/2_Chaos_Attack_Lab.py", label="Open Chaos Attack Lab 💥", icon="💥", use_container_width=True)
 
 with c3:
     st.markdown("""
     <div class="portal-card">
         <div style="font-size: 2.2rem; margin-bottom: 0.3rem;">🤖</div>
-        <h3 style="margin: 0; color: #0f172a;">Synthetic Benchmark</h3>
+        <h3 style="margin: 0; color: #0f172a;">3. Synthetic AI Benchmark</h3>
         <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.25rem;">
-            Generate 500+ enterprise training samples and benchmark VeriFlow vs Raw LLMs.
+            Generate 500+ enterprise training samples, export JSONL, and benchmark VeriFlow vs Raw LLMs.
         </p>
     </div>
     """, unsafe_allow_html=True)
-    st.page_link("pages/3_Synthetic_Dataset.py", label="Open Synthetic Benchmarks 🤖", icon="🤖", use_container_width=True)
 
 st.write("")
 c4, c5 = st.columns(2)
@@ -102,22 +99,20 @@ with c4:
     st.markdown("""
     <div class="portal-card">
         <div style="font-size: 2.2rem; margin-bottom: 0.3rem;">📜</div>
-        <h3 style="margin: 0; color: #0f172a;">Compliance Vault</h3>
+        <h3 style="margin: 0; color: #0f172a;">4. Compliance Vault</h3>
         <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.25rem;">
             Inspect immutable SHA-256 formal verification receipts and audit ledger.
         </p>
     </div>
     """, unsafe_allow_html=True)
-    st.page_link("pages/4_Compliance_Vault.py", label="Open Compliance Vault 📜", icon="📜", use_container_width=True)
 
 with c5:
     st.markdown("""
     <div class="portal-card">
         <div style="font-size: 2.2rem; margin-bottom: 0.3rem;">🎓</div>
-        <h3 style="margin: 0; color: #0f172a;">Architecture & USPs</h3>
+        <h3 style="margin: 0; color: #0f172a;">5. Architecture & USPs</h3>
         <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.25rem;">
             Deep-dive into the neurosymbolic AI stack, formal methods, and team assembly line.
         </p>
     </div>
     """, unsafe_allow_html=True)
-    st.page_link("pages/5_Architecture_USPs.py", label="Open Architecture & USPs 🎓", icon="🎓", use_container_width=True)
