@@ -605,6 +605,21 @@ elif st.session_state.nav_page == PAGES[4]:
         """, unsafe_allow_html=True)
 
     st.write("")
+    st.markdown("### 📥 Download Official Presentation Word Documents")
+    
+    doc_path = "VERIFLOW_COMPLETE_PAGE_BY_PAGE_EXPLAINER.docx"
+    if os.path.exists(doc_path):
+        with open(doc_path, "rb") as f:
+            st.download_button(
+                label="📄 Download Complete Page-by-Page Explainer & Tech Stack (.docx)",
+                data=f.read(),
+                file_name="VERIFLOW_COMPLETE_PAGE_BY_PAGE_EXPLAINER.docx",
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                type="primary",
+                use_container_width=True
+            )
+
+    st.write("")
     st.markdown("""
     ### 🏆 Why VeriFlow Wins (The Neurosymbolic Advantage)
     Standard LLMs alone are **stochastic (probabilistic)** — they can hallucinate missing constraints or bypass approval steps.
