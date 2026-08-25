@@ -1,11 +1,12 @@
-streamlit>=1.32.0
-networkx>=3.2.1
-pydantic>=2.6.0
-pyvis>=0.3.2
-graphviz>=0.20.1
-sentence-transformers>=2.5.1
-google-generativeai>=0.4.1
-python-dotenv>=1.0.1
-litellm>=1.30.0
+# VeriFlow – Team Member 1 (AI Parser & Ambiguity Specialist)
+# Requirements
+
+# Core framework
+pydantic>=2.0.0
+
+# LLM integration (live mode)
+google-generativeai>=0.5.0
+
+# Testing
 pytest>=8.0.0
-rich>=13.7.0
+pytest-mock>=3.14.0
