@@ -1,5 +1,5 @@
 # VeriFlow Enterprise Neurosymbolic Safety Compiler
-# Multi-Tab Master Command Center with Live Background Telemetry & Custom Text Processing
+# Clean Modern SaaS Light Edition • Multi-Tab Command Center
 import json
 import os
 import time
@@ -15,48 +15,49 @@ from executor.proof import generate_proof_certificate
 
 # --- Page Configuration ---
 st.set_page_config(
-    page_title="VeriFlow • Enterprise Neurosymbolic Workflow Compiler",
+    page_title="VeriFlow • Enterprise Workflow Safety Compiler",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# --- Premium Cyberpunk / Enterprise Dark Glassmorphism CSS ---
+# --- Clean Modern Light Theme CSS ---
 st.markdown("""
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
     * {
-        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     }
     
     code, pre, .terminal-box, .cert-hash, .telemetry-stream {
         font-family: 'JetBrains Mono', monospace !important;
     }
 
+    /* Modern Clean Light Canvas */
     .stApp {
-        background: radial-gradient(circle at 10% 20%, rgba(30, 27, 75, 0.85) 0%, rgba(15, 23, 42, 1) 90.2%);
-        color: #f1f5f9;
+        background-color: #f8fafc;
+        color: #0f172a;
     }
 
-    .glass-card {
-        background: rgba(30, 41, 59, 0.65);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Crisp Elevated White Cards */
+    .saas-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
         border-radius: 16px;
         padding: 1.5rem;
         margin-bottom: 1.25rem;
-        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-        transition: transform 0.2s ease, border-color 0.2s ease;
+        box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
     
-    .glass-card:hover {
-        border-color: rgba(99, 102, 241, 0.35);
+    .saas-card:hover {
+        box-shadow: 0 10px 25px -3px rgba(15, 23, 42, 0.09);
     }
 
+    /* Metric Badges */
     .metric-container {
         display: flex;
         gap: 1rem;
@@ -65,113 +66,139 @@ st.markdown("""
     
     .metric-pill {
         flex: 1;
-        background: rgba(15, 23, 42, 0.8);
-        border: 1px solid rgba(99, 102, 241, 0.25);
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
         border-radius: 12px;
-        padding: 0.9rem;
+        padding: 0.9rem 1rem;
         text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     }
     
     .metric-val {
-        font-size: 1.5rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: #4f46e5;
     }
     
     .metric-label {
         font-size: 0.75rem;
-        color: #94a3b8;
+        color: #64748b;
         text-transform: uppercase;
+        font-weight: 600;
         letter-spacing: 0.05em;
         margin-top: 0.2rem;
     }
 
+    /* Status Banners */
     .badge-pass {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.25) 100%);
-        border: 1px solid #10b981;
-        color: #34d399;
+        background-color: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        color: #065f46;
         padding: 0.85rem 1.2rem;
-        border-radius: 10px;
+        border-radius: 12px;
         font-weight: 600;
+        font-size: 0.95rem;
     }
 
     .badge-fail {
-        background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(185, 28, 28, 0.25) 100%);
-        border: 1px solid #ef4444;
-        color: #f87171;
+        background-color: #fff1f2;
+        border: 1px solid #fecdd3;
+        color: #9f1239;
         padding: 0.85rem 1.2rem;
-        border-radius: 10px;
+        border-radius: 12px;
         font-weight: 600;
+        font-size: 0.95rem;
     }
 
     .badge-warn {
-        background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.25) 100%);
-        border: 1px solid #f59e0b;
-        color: #fbbf24;
+        background-color: #fffbeb;
+        border: 1px solid #fde68a;
+        color: #92400e;
         padding: 0.85rem 1.2rem;
-        border-radius: 10px;
+        border-radius: 12px;
         font-weight: 600;
+        font-size: 0.95rem;
     }
 
-    .telemetry-stream {
-        background-color: #020617;
+    /* Terminal Console */
+    .terminal-console {
+        background-color: #0f172a;
         border: 1px solid #1e293b;
         border-radius: 12px;
-        padding: 1.2rem;
+        padding: 1.1rem;
         font-size: 0.82rem;
         color: #38bdf8;
         max-height: 280px;
         overflow-y: auto;
-        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+    }
+    
+    .terminal-line {
+        margin-bottom: 0.4rem;
+    }
+
+    /* Telemetry Stream */
+    .telemetry-stream {
+        background-color: #0f172a;
+        border: 1px solid #1e293b;
+        border-radius: 12px;
+        padding: 1.2rem;
+        font-size: 0.82rem;
+        color: #f1f5f9;
+        max-height: 380px;
+        overflow-y: auto;
     }
     
     .telemetry-step {
-        margin-bottom: 0.5rem;
-        border-bottom: 1px dashed rgba(255,255,255,0.06);
-        padding-bottom: 0.4rem;
+        margin-bottom: 0.6rem;
+        border-bottom: 1px dashed #334155;
+        padding-bottom: 0.5rem;
     }
 
+    /* Certificate Card */
     .cert-vault-card {
-        background: linear-gradient(135deg, rgba(79, 70, 229, 0.25) 0%, rgba(147, 51, 234, 0.25) 100%);
-        border: 1px solid rgba(168, 85, 247, 0.4);
+        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
         border-radius: 14px;
-        padding: 1.25rem;
+        padding: 1.4rem;
+        color: #ffffff;
         text-align: center;
-        box-shadow: 0 8px 32px rgba(124, 58, 237, 0.2);
+        box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.35);
     }
 
+    /* Attack Cards */
     .attack-card {
-        background: rgba(15, 23, 42, 0.7);
-        border-left: 4px solid #10b981;
-        border-radius: 8px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-left: 5px solid #10b981;
+        border-radius: 10px;
         padding: 0.9rem 1.1rem;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.85rem;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     }
     
     .attack-card.breached {
         border-left-color: #ef4444;
     }
 
+    /* Clean Streamlit Tab Styling */
     .stTabs [data-baseweb="tab-list"] {
         gap: 0.5rem;
-        background-color: rgba(15, 23, 42, 0.6);
-        padding: 0.5rem;
+        background-color: #ffffff;
+        padding: 0.4rem;
         border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
 
     .stTabs [data-baseweb="tab"] {
-        height: 48px;
+        height: 44px;
         border-radius: 8px;
-        color: #94a3b8;
+        color: #64748b;
         font-weight: 600;
         padding: 0 1.25rem;
     }
 
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+        background: #4f46e5 !important;
         color: #ffffff !important;
     }
 </style>
@@ -325,23 +352,24 @@ def run_attack_suite_with_fallback(workflow: WorkflowIR) -> list[dict]:
             }
         ]
 
-# --- Master Header ---
+# --- Master Header Banner ---
 st.markdown("""
-<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e2e8f0;">
     <div>
-        <h1 style="font-size: 2.2rem; font-weight: 800; margin: 0; background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-            🛡️ VeriFlow Enterprise Safety Compiler
+        <h1 style="font-size: 2.1rem; font-weight: 800; margin: 0; color: #0f172a; display: flex; align-items: center; gap: 0.6rem;">
+            🛡️ <span style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">VeriFlow</span>
+            <span style="font-size: 1rem; font-weight: 600; color: #64748b; margin-left: 0.5rem;">Enterprise Workflow Safety Compiler</span>
         </h1>
-        <p style="color: #94a3b8; margin-top: 0.25rem; font-size: 0.95rem;">
-            Neurosymbolic Safety Engine • Live Text Compiler • Background Telemetry • Graph Invariant Verifier
+        <p style="color: #64748b; margin-top: 0.2rem; font-size: 0.95rem;">
+            Neurosymbolic Safety Engine • Natural Language Policy Parser • Graph Invariant Verifier • Zero-Trust Execution
         </p>
     </div>
     <div style="display: flex; gap: 0.5rem;">
-        <span style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600;">
-            ● COMPILER ONLINE
+        <span style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #059669; padding: 0.35rem 0.8rem; border-radius: 8px; font-size: 0.85rem; font-weight: 700;">
+            ● COMPILER LIVE
         </span>
-        <span style="background: rgba(99, 102, 241, 0.15); border: 1px solid #6366f1; color: #818cf8; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600;">
-            TELEMETRY: ACTIVE
+        <span style="background: #eef2ff; border: 1px solid #c7d2fe; color: #4338ca; padding: 0.35rem 0.8rem; border-radius: 8px; font-size: 0.85rem; font-weight: 700;">
+            ZERO-TRUST PROOFS: ON
         </span>
     </div>
 </div>
@@ -352,7 +380,7 @@ st.markdown("""
 <div class="metric-container">
     <div class="metric-pill">
         <div class="metric-val">100%</div>
-        <div class="metric-label">Adversarial Chaos Defenses</div>
+        <div class="metric-label">Chaos Attack Immunity</div>
     </div>
     <div class="metric-pill">
         <div class="metric-val">O(V + E)</div>
@@ -360,11 +388,11 @@ st.markdown("""
     </div>
     <div class="metric-pill">
         <div class="metric-val">SHA-256</div>
-        <div class="metric-label">Cryptographic Audit Proofs</div>
+        <div class="metric-label">Cryptographic Proofs</div>
     </div>
     <div class="metric-pill">
         <div class="metric-val">0-Trust</div>
-        <div class="metric-label">Deterministic Safety</div>
+        <div class="metric-label">Deterministic Execution</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -385,7 +413,7 @@ attacks = run_attack_suite_with_fallback(current_ir)
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "⚡ Studio & Live Compiler",
     "📡 Live Background Telemetry",
-    "🕸️ Graph AI & RBAC Security Matrix",
+    "🕸️ Graph AI & RBAC Matrix",
     "💥 Adversarial Chaos Attack Lab",
     "📜 Cryptographic Proof Vault"
 ])
@@ -398,9 +426,9 @@ with tab1:
 
     # Left Column: Policy Input & Presets
     with c1:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("### 📝 Live Policy Editor")
-        st.caption("Type any custom business rule or click a preset:")
+        st.markdown('<div class="saas-card">', unsafe_allow_html=True)
+        st.markdown("### 📝 Policy Input Studio")
+        st.caption("Select a scenario preset or type custom natural language:")
 
         p_row1, p_row2 = st.columns(2)
         with p_row1:
@@ -425,13 +453,13 @@ with tab1:
 
         st.write("")
         user_text = st.text_area(
-            "Natural Language Input Area:",
+            "Natural Language Business Policy:",
             value=st.session_state.policy_input,
             height=130,
             help="Type any business rule here. The compiler will parse and verify it live."
         )
 
-        if st.button("🚀 Compile & Verify Custom Policy", type="primary", use_container_width=True):
+        if st.button("🚀 Compile & Verify Policy", type="primary", use_container_width=True):
             st.session_state.preset_key = "custom"
             st.session_state.policy_input = user_text
             st.rerun()
@@ -440,7 +468,7 @@ with tab1:
 
     # Middle Column: Symbolic DAG & Real-time Graph
     with c2:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="saas-card">', unsafe_allow_html=True)
         st.markdown("### 🕸️ Directed Workflow Graph (DAG)")
         
         # Real-time Status Banner
@@ -472,25 +500,28 @@ with tab1:
             for fix in fixes:
                 st.info(f"💡 Fix Suggestion: {fix}")
 
-        # Render DAG Nodes
+        # Render DAG Nodes with Light Theme
         dot = graphviz.Digraph(comment="VeriFlow Workflow Graph")
         dot.attr(rankdir="LR", bgcolor="transparent")
-        dot.attr('node', shape='rectangle', style='filled,rounded', fontname='Helvetica', fontcolor='white')
+        dot.attr('node', shape='rectangle', style='filled,rounded', fontname='Plus Jakarta Sans', fontcolor='#0f172a', penwidth='1.5')
 
         for step in current_ir.steps:
             if not verification_report["is_valid"]:
-                fill_color = "#991b1b"
+                fill_color = "#fecdd3"
+                border_color = "#e11d48"
             elif ambiguity_report["is_ambiguous"]:
-                fill_color = "#b45309"
+                fill_color = "#fef3c7"
+                border_color = "#d97706"
             else:
-                fill_color = "#065f46"
+                fill_color = "#d1fae5"
+                border_color = "#059669"
                 
             label = f"{step.id}\n{step.action}\n[{step.role}]"
-            dot.node(step.id, label, fillcolor=fill_color)
+            dot.node(step.id, label, fillcolor=fill_color, color=border_color)
 
         for step in current_ir.steps:
             for dep in step.dependencies:
-                dot.edge(dep, step.id, color="#94a3b8")
+                dot.edge(dep, step.id, color="#64748b", penwidth="1.8")
 
         st.graphviz_chart(dot, use_container_width=True)
 
@@ -501,17 +532,17 @@ with tab1:
 
     # Right Column: Execution Terminal & Instant Proof
     with c3:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="saas-card">', unsafe_allow_html=True)
         st.markdown("### 📜 Sandbox State Machine")
 
         if verification_report["is_valid"] and not ambiguity_report["is_ambiguous"]:
             logs = execute_workflow(current_ir)
-            st.markdown('<div class="telemetry-stream">', unsafe_allow_html=True)
+            st.markdown('<div class="terminal-console">', unsafe_allow_html=True)
             for entry in logs:
                 st.markdown(
-                    f'<div class="telemetry-step"><span style="color:#64748b;">{entry["timestamp"][-12:-4]}</span> '
+                    f'<div class="terminal-line"><span style="color:#94a3b8;">{entry["timestamp"][-12:-4]}</span> '
                     f'<span style="color:#34d399; font-weight:600;">[SUCCESS]</span> <b>{entry["step_id"]}</b>: {entry["action"]} '
-                    f'<br><span style="color:#94a3b8; font-size:0.75rem;">Role: {entry["role"]} | Cond: {entry["condition"] or "None"}</span></div>',
+                    f'<br><span style="color:#cbd5e1; font-size:0.75rem;">Role: {entry["role"]} | Cond: {entry["condition"] or "None"}</span></div>',
                     unsafe_allow_html=True
                 )
             st.markdown('</div>', unsafe_allow_html=True)
@@ -520,10 +551,10 @@ with tab1:
             cert = generate_proof_certificate(current_ir, verification_report)
             st.markdown(f"""
             <div class="cert-vault-card">
-                <div style="font-size: 0.75rem; text-transform: uppercase; color: #cbd5e1; letter-spacing: 0.1em;">Verified Proof Certificate</div>
-                <div style="font-size: 1.25rem; font-weight: 700; color: #ffffff; margin: 0.3rem 0;">{cert['certificate_id']}</div>
-                <div class="cert-hash" style="font-size: 0.75rem; color: #a78bfa; word-break: break-all;">{cert['sha256_signature'][:32]}...</div>
-                <div style="margin-top: 0.4rem; font-size: 0.8rem; color: #34d399; font-weight: 600;">STATUS: {cert['status']}</div>
+                <div style="font-size: 0.75rem; text-transform: uppercase; color: #e0e7ff; letter-spacing: 0.1em;">Verified Proof Certificate</div>
+                <div style="font-size: 1.25rem; font-weight: 800; color: #ffffff; margin: 0.3rem 0;">{cert['certificate_id']}</div>
+                <div class="cert-hash" style="font-size: 0.75rem; color: #c7d2fe; word-break: break-all;">{cert['sha256_signature'][:32]}...</div>
+                <div style="margin-top: 0.4rem; font-size: 0.8rem; color: #a7f3d0; font-weight: 700;">STATUS: {cert['status']}</div>
             </div>
             """, unsafe_allow_html=True)
         else:
@@ -533,10 +564,10 @@ with tab1:
         st.markdown('</div>', unsafe_allow_html=True)
 
 # ===========================================================================
-# TAB 2: LIVE BACKGROUND TELEMETRY & COMPILER TRACE
+# TAB 2: LIVE BACKGROUND TELEMETRY
 # ===========================================================================
 with tab2:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="saas-card">', unsafe_allow_html=True)
     st.markdown("### 📡 Live Background Pipeline Telemetry & Internal Engine Traces")
     st.caption("Inspect the exact mathematical operations and AI inferences happening behind the scenes:")
 
@@ -544,37 +575,37 @@ with tab2:
     with t1:
         st.markdown("**Real-Time Engine Execution Trace:**")
         st.markdown(f"""
-        <div class="telemetry-stream" style="max-height: 420px;">
+        <div class="telemetry-stream">
             <div class="telemetry-step">
-                <span style="color:#a855f7;">[STAGE 1/6 • SCANNER]</span> <b>Semantic Ambiguity Firewall</b><br>
+                <span style="color:#c084fc; font-weight:700;">[STAGE 1/6 • SCANNER]</span> <b>Semantic Ambiguity Firewall</b><br>
                 • Scanned: {len(st.session_state.policy_input.split())} words, {len(st.session_state.policy_input)} characters<br>
                 • Detected Vague Terms: {ambiguity_report.get('detected_terms') or 'None (Clean)'}<br>
-                • Ambiguity Flag: <span style="color:{'#fbbf24' if ambiguity_report['is_ambiguous'] else '#34d399'};">{'TRIGGERED' if ambiguity_report['is_ambiguous'] else 'PASSED'}</span>
+                • Ambiguity Flag: <span style="color:{'#fbbf24' if ambiguity_report['is_ambiguous'] else '#34d399'}; font-weight:700;">{'TRIGGERED' if ambiguity_report['is_ambiguous'] else 'PASSED'}</span>
             </div>
             <div class="telemetry-step">
-                <span style="color:#38bdf8;">[STAGE 2/6 • PARSER]</span> <b>Neurosymbolic AST & IR Synthesis</b><br>
+                <span style="color:#38bdf8; font-weight:700;">[STAGE 2/6 • PARSER]</span> <b>Neurosymbolic AST & IR Synthesis</b><br>
                 • Generated Workflow ID: <code>{current_ir.workflow_id}</code><br>
                 • Extracted Steps Count: {len(current_ir.steps)} StepNodes<br>
                 • Roles Identified: {current_ir.roles_allowed or [s.role for s in current_ir.steps]}
             </div>
             <div class="telemetry-step">
-                <span style="color:#60a5fa;">[STAGE 3/6 • GRAPH ENGINE]</span> <b>NetworkX Topological Invariant Evaluation</b><br>
+                <span style="color:#60a5fa; font-weight:700;">[STAGE 3/6 • GRAPH ENGINE]</span> <b>NetworkX Topological Invariant Evaluation</b><br>
                 • Node Count: {len(current_ir.steps)} | Edge Count: {sum(len(s.dependencies) for s in current_ir.steps)}<br>
-                • Acyclicity Proof: <span style="color:{'#34d399' if verification_report['is_valid'] else '#f87171'};">{'DAG Verified (No Cycles)' if verification_report['is_valid'] else 'Cyclic Loop Detected'}</span><br>
+                • Acyclicity Proof: <span style="color:{'#34d399' if verification_report['is_valid'] else '#f87171'}; font-weight:700;">{'DAG Verified (No Cycles)' if verification_report['is_valid'] else 'Cyclic Loop Detected'}</span><br>
                 • Cut-Set Guard Bypass Check: {'PASSED (Approval Guard Active)' if verification_report['is_valid'] else 'FAILED (Unguarded Bypass)'}
             </div>
             <div class="telemetry-step">
-                <span style="color:#ec4899;">[STAGE 4/6 • VERIFIER]</span> <b>Symbolic RBAC Authorization</b><br>
+                <span style="color:#f472b6; font-weight:700;">[STAGE 4/6 • VERIFIER]</span> <b>Symbolic RBAC Authorization</b><br>
                 • RBAC Permission Checks: {len(current_ir.steps)} nodes evaluated against matrix<br>
-                • Status: <span style="color:{'#34d399' if verification_report['is_valid'] else '#f87171'};">{'All Steps Authorized' if verification_report['is_valid'] else 'Unauthorized Action Detected'}</span>
+                • Status: <span style="color:{'#34d399' if verification_report['is_valid'] else '#f87171'}; font-weight:700;">{'All Steps Authorized' if verification_report['is_valid'] else 'Unauthorized Action Detected'}</span>
             </div>
             <div class="telemetry-step">
-                <span style="color:#f59e0b;">[STAGE 5/6 • CHAOS GAUNTLET]</span> <b>Adversarial Mutation Testing</b><br>
+                <span style="color:#fbbf24; font-weight:700;">[STAGE 5/6 • CHAOS GAUNTLET]</span> <b>Adversarial Mutation Testing</b><br>
                 • Fired 6 Chaos Vectors (Bypass, Escalation, Pruning, Threshold, Cycle, Exfiltration)<br>
                 • Defense Rate: <b>{sum(1 for a in attacks if a.get('status') == 'BLOCKED')}/6 Attacks Blocked (100%)</b>
             </div>
             <div class="telemetry-step">
-                <span style="color:#10b981;">[STAGE 6/6 • SANDBOX]</span> <b>Cryptographic Proof Generation</b><br>
+                <span style="color:#34d399; font-weight:700;">[STAGE 6/6 • SANDBOX]</span> <b>Cryptographic Proof Generation</b><br>
                 • Computed Deterministic Canonical JSON Digest<br>
                 • SHA-256 Hash: <code>{generate_proof_certificate(current_ir, verification_report)['sha256_signature'][:40]}...</code>
             </div>
@@ -600,7 +631,7 @@ with tab2:
 # TAB 3: GRAPH AI & RBAC SECURITY MATRIX
 # ===========================================================================
 with tab3:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="saas-card">', unsafe_allow_html=True)
     st.markdown("### 🕸️ Deep Graph Topology & Reachability Analyzer")
     st.write("VeriFlow uses **NetworkX** to perform mathematical invariant checks on workflow structure prior to compilation.")
 
@@ -629,7 +660,7 @@ with tab3:
 # TAB 4: ADVERSARIAL CHAOS ATTACK LAB
 # ===========================================================================
 with tab4:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="saas-card">', unsafe_allow_html=True)
     st.markdown("### 💥 6-Vector Adversarial Chaos Gauntlet")
     st.caption("VeriFlow aggressively attacks its own generated workflows with mutation testing before allowing execution.")
 
@@ -643,12 +674,12 @@ with tab4:
             
             st.markdown(f"""
             <div class="{card_class}">
-                <div style="font-size: 1.05rem; font-weight: 700; color: #f8fafc;">
+                <div style="font-size: 1.05rem; font-weight: 700; color: #0f172a;">
                     {badge_color} {atk.get('attack_name', 'Adversarial Attack')}
                 </div>
-                <div style="font-size: 0.8rem; color: #94a3b8; margin: 0.2rem 0;">Type: <code>{atk.get('attack_type', 'Mutation')}</code> | Status: <b>{atk.get('status', 'BLOCKED')}</b></div>
-                <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.4rem;"><b>Outcome:</b> {atk.get('explanation', '')}</div>
-                <div style="font-size: 0.8rem; color: #34d399; margin-top: 0.3rem;"><b>Defense:</b> {atk.get('mitigation', 'Enforce Invariant')}</div>
+                <div style="font-size: 0.8rem; color: #64748b; margin: 0.2rem 0;">Type: <code>{atk.get('attack_type', 'Mutation')}</code> | Status: <b style="color:{'#059669' if is_blocked else '#dc2626'};">{atk.get('status', 'BLOCKED')}</b></div>
+                <div style="font-size: 0.85rem; color: #334155; margin-top: 0.4rem;"><b>Outcome:</b> {atk.get('explanation', '')}</div>
+                <div style="font-size: 0.8rem; color: #059669; font-weight: 600; margin-top: 0.3rem;"><b>Defense:</b> {atk.get('mitigation', 'Enforce Invariant')}</div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -658,7 +689,7 @@ with tab4:
 # TAB 5: CRYPTOGRAPHIC AUDIT VAULT
 # ===========================================================================
 with tab5:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="saas-card">', unsafe_allow_html=True)
     st.markdown("### 📜 Cryptographic Audit Vault & Proof Certificates")
     st.write("Every verified workflow execution generates an immutable, tamper-proof SHA-256 certificate for corporate legal & financial compliance.")
 
@@ -669,13 +700,13 @@ with tab5:
         st.markdown(f"""
         <div class="cert-vault-card" style="text-align: left; padding: 2rem;">
             <h3 style="margin-top: 0; color: #ffffff;">🔒 Immutable Proof Certificate</h3>
-            <p style="color: #cbd5e1; font-size: 0.9rem;">This cryptographic receipt proves that the workflow definition, DAG reachability, and RBAC matrix were verified mathematically prior to state machine execution.</p>
-            <hr style="border-color: rgba(255,255,255,0.1);">
+            <p style="color: #e0e7ff; font-size: 0.9rem;">This cryptographic receipt proves that the workflow definition, DAG reachability, and RBAC matrix were verified mathematically prior to state machine execution.</p>
+            <hr style="border-color: rgba(255,255,255,0.25);">
             <div><b>Certificate ID:</b> <code>{v_cert['certificate_id']}</code></div>
             <div><b>Workflow ID:</b> <code>{v_cert['workflow_id']}</code></div>
             <div><b>SHA-256 Signature:</b> <code style="word-break: break-all;">{v_cert['sha256_signature']}</code></div>
             <div><b>Verification Timestamp:</b> <code>{v_cert['verified_at']}</code></div>
-            <div><b>Compliance Status:</b> <span style="color: #34d399; font-weight: bold;">{v_cert['status']}</span></div>
+            <div><b>Compliance Status:</b> <span style="color: #a7f3d0; font-weight: bold;">{v_cert['status']}</span></div>
         </div>
         """, unsafe_allow_html=True)
 
