@@ -1,11 +1,13 @@
 # VeriFlow Streamlit Master Safety Dashboard
 # AI-Powered Verified Workflow Compiler (Neurosymbolic Safety Engine)
 # Full 3-Member Unified Production Prototype
-import streamlit as st
 import json
 import os
 import time
-import graphviz
+import importlib
+
+st = importlib.import_module("streamlit")
+graphviz = importlib.import_module("graphviz")
 from compiler.ir import WorkflowIR, StepNode
 from executor.engine import execute_workflow
 from executor.proof import generate_proof_certificate
