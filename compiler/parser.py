@@ -19,6 +19,7 @@ import logging
 import os
 import re
 import uuid
+import importlib.util
 from pathlib import Path
 from typing import Optional
 
@@ -153,7 +154,10 @@ def _load_offline_fallback(policy_text: str) -> WorkflowIR:
 
 def _call_gemini(policy_text: str) -> WorkflowIR:
     """Call Gemini 1.5 Flash and parse the JSON response into a WorkflowIR."""
-    import google.generativeai as genai  # lazy import – not required offline
+    if importlib.util.find_spec("google.generativeai") is None:
+        raise ImportError("google.generativeai is not installed.")
+
+    import google.generativeai as genai
 
     api_key = os.environ.get("GEMINI_API_KEY", "")
     if not api_key:
@@ -192,28 +196,6 @@ def _call_gemini(policy_text: str) -> WorkflowIR:
 def parse_policy(policy_text: str) -> WorkflowIR:
     """Convert a natural-language business policy string into a
     validated :class:`~compiler.ir.WorkflowIR` object.
-
-    Execution order
-    ---------------
-    1. If ``OFFLINE_MODE=True`` env-var is set → load offline fixture.
-    2. Otherwise attempt a live Gemini 1.5 Flash call.
-    3. On **any** error (network, quota, parse) → fall back to offline fixture
-       and emit a WARNING log.
-
-    Parameters
-    ----------
-    policy_text:
-        Raw natural-language policy string (any length).
-
-    Returns
-    -------
-    WorkflowIR
-        A validated Pydantic model ready for downstream stages.
-
-    Raises
-    ------
-    This function **never raises** — it always returns a WorkflowIR (using the
-    offline fixture when necessary).
     """
     offline_mode = os.environ.get("OFFLINE_MODE", "false").lower() in (
         "1", "true", "yes",

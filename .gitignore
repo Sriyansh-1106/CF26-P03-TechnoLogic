@@ -9,6 +9,7 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
+*$py.class
 
 # Pytest cache
 .pytest_cache/
